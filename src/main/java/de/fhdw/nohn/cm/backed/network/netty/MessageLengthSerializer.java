@@ -1,6 +1,5 @@
 package de.fhdw.nohn.cm.backed.network.netty;
 
-import de.fhdw.nohn.cm.backed.network.packet.PacketUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
@@ -15,14 +14,15 @@ public class MessageLengthSerializer extends MessageToByteEncoder {
 		ByteBuf in = (ByteBuf) msg;
 		
 		int readableBytes = in.readableBytes();
-		int lengthByteSpace = PacketUtil.getVarIntLength(readableBytes);
+		int lengthByteSpace = PacketBuffer.getVarIntSize(readableBytes);
 		
 		if (lengthByteSpace > 3) {
 			throw new IllegalArgumentException("unable to fit " + lengthByteSpace + " into 3");
 		}
-		out.ensureWritable(lengthByteSpace + readableBytes);
-		PacketUtil.writeVarInt(out,readableBytes);
-		out.writeBytes(in, in.readerIndex(), readableBytes);
+		PacketBuffer buffer = new PacketBuffer(out);
+		buffer.ensureWritable(lengthByteSpace + readableBytes);
+		buffer.writeVarInt(readableBytes);
+		buffer.writeBytes(in, in.readerIndex(), readableBytes);
 	}
 }
 

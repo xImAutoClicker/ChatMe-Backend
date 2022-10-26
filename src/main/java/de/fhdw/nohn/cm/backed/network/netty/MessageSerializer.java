@@ -1,6 +1,5 @@
 package de.fhdw.nohn.cm.backed.network.netty;
 
-import de.fhdw.nohn.cm.backed.network.packet.PacketUtil;
 import de.fhdw.nohn.cm.backed.network.packet.out.OutPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -15,7 +14,8 @@ public class MessageSerializer extends MessageToByteEncoder {
 		
 		final OutPacket outPacket = (OutPacket) msg;
 		
-		PacketUtil.writeVarInt(out, outPacket.getPacketId());
-		outPacket.writePacket(out);
+		PacketBuffer buffer = new PacketBuffer(out);
+		buffer.writeVarInt(outPacket.getPacketId());
+		outPacket.writePacket(buffer);
 	}
 }

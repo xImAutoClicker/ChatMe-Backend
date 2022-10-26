@@ -2,7 +2,6 @@ package de.fhdw.nohn.cm.backed.network.netty;
 
 import java.util.List;
 
-import de.fhdw.nohn.cm.backed.network.packet.PacketUtil;
 import de.fhdw.nohn.cm.backed.network.packet.Packets;
 import de.fhdw.nohn.cm.backed.network.packet.in.InPacket;
 import io.netty.buffer.ByteBuf;
@@ -16,9 +15,10 @@ public class MessageDeserializer extends ByteToMessageDecoder {
 	 * is created from the respective package.
 	 */
 	@Override
-	protected void decode(ChannelHandlerContext ctx, ByteBuf buffer, List<Object> out) throws Exception {
-		if (buffer.readableBytes() > 0) {
-			int packetId = PacketUtil.readVarInt(buffer);
+	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
+		if (in.readableBytes() > 0) {
+			PacketBuffer buffer = new PacketBuffer(in);
+			int packetId = buffer.readVarInt();
 			
 			InPacket packet = Packets.newPacketInstance(packetId);
 			

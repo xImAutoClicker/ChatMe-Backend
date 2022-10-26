@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 
 import de.fhdw.nohn.cm.backed.network.packet.in.InPacket;
 import de.fhdw.nohn.cm.backed.network.packet.in.PacketInLogin;
+import de.fhdw.nohn.cm.backed.network.packet.in.PacketInMessage;
 
 public class Packets {
 	
@@ -14,6 +15,7 @@ public class Packets {
 	
 	static {
 		registerPacket(0, PacketInLogin.class);
+		registerPacket(1, PacketInMessage.class);
 	}
 	
 	public static InPacket newPacketInstance(final int packetId) throws Exception {

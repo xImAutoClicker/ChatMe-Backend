@@ -3,8 +3,6 @@ package de.fhdw.nohn.cm.backed.network.packet;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import com.github.luben.zstd.Zstd;
-
 import io.netty.buffer.ByteBuf;
 
 public class PacketUtil {
@@ -49,17 +47,13 @@ public class PacketUtil {
 	}
 	
 	public static String readString(ByteBuf buffer) throws IOException {
-		int var2 = buffer.readInt();
+		int lenght = buffer.readInt();
 		
-		if(var2 == -1) {
+		if(lenght == -1) {
 			return "";
 		}
-		int compressedLenght = buffer.readInt();
-		
-		byte[] compressed = new byte[compressedLenght];
-		buffer.readBytes(compressed);
-		
-		byte[] data = Zstd.decompress(compressed, var2);
+		byte[] data = new byte[lenght];
+		buffer.readBytes(data);
 		
 		String var3 = new String(data, Charset.forName("UTF-8"));
 		return var3;
@@ -70,15 +64,13 @@ public class PacketUtil {
 			buffer.writeInt(-1);
 			return;
 		}
-		byte[] var2 = string.getBytes(Charset.forName("UTF-8"));
-		byte[] compressed = Zstd.compress(var2);
+		byte[] data = string.getBytes(Charset.forName("UTF-8"));
 		
-		if (compressed.length > 32767) {
+		if (data.length > 32767) {
 			throw new IOException("String too big (was " + string.length() + " bytes encoded, max " + 32767 + ")");
 		} else {
-			buffer.writeInt(var2.length);
-			buffer.writeInt(compressed.length);
-			buffer.writeBytes(compressed);
+			buffer.writeInt(data.length);
+			buffer.writeBytes(data);
 		}
 	}
 }

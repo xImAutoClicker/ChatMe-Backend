@@ -25,7 +25,6 @@ public class NettyLoginServer extends Thread {
 
 	public NettyLoginServer(int port) {
 		super("NettyLoginServer");
-		super.setDaemon(true);
 
 		this.port = port;
 	}
@@ -59,7 +58,7 @@ public class NettyLoginServer extends Thread {
 						}
 					}).option(ChannelOption.SO_BACKLOG, Integer.MAX_VALUE).childOption(ChannelOption.SO_KEEPALIVE, true)
 					.childOption(ChannelOption.TCP_NODELAY, true);
-
+			
 			ChannelFuture channelFuture = serverBootstrap.bind(this.port).sync();
 			channelFuture.channel().closeFuture().sync();
 		} catch (Exception exc) {

@@ -11,12 +11,13 @@ public class PacketOutServerInfo implements OutPacket {
 	
 	private final int packetId = 1;
 	
-	private final String ip;
+	private final String serverName, ip;
 	
 	private final int port;
 	
 	@Override
 	public void writePacket(ByteBuf buffer) throws Exception {
+		PacketUtil.writeString(buffer, this.serverName);
 		PacketUtil.writeString(buffer, this.ip);
 		buffer.writeInt(this.port);
 	}

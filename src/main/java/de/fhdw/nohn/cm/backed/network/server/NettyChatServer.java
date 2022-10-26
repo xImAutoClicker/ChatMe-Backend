@@ -30,7 +30,6 @@ public class NettyChatServer extends Thread {
 	
 	public NettyChatServer(int port) {
 		super("NettyChatServer");
-		super.setDaemon(true);
 
 		this.port = port;
 	}

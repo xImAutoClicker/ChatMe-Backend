@@ -7,7 +7,6 @@ import com.google.common.collect.Lists;
 import de.fhdw.nohn.cm.backed.network.packet.out.OutPacket;
 import de.fhdw.nohn.cm.backed.user.UserEntry;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelFutureListener;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -15,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class ServerEntry {
 	
-	private final String serverName, ipAddresse;
+	private final String host, serverName;
 	
 	private final int port;
 	
@@ -25,7 +24,7 @@ public class ServerEntry {
 	
 	
 	
-	public void sendPacket(final OutPacket packet, ChannelFutureListener...channelFutureListeners) {
+	public void sendPacket(final OutPacket packet) {
 		this.channel.writeAndFlush(packet);
 	}
 }
